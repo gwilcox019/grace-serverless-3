@@ -3,7 +3,6 @@ module.exports = async function (context, req) {
 
     var password = req.query.password
     
-    
     var response = "Access denied."
     if (password == "letmein")
         response = "Access granted."
