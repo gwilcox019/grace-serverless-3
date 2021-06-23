@@ -1,6 +1,7 @@
 # [Replace this with your project title]
 
 ## About Me
+Hello everyone! My name is Grace Wilcox!
 
 ## The Premise
 
