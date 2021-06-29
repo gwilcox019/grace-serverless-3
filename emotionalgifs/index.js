@@ -22,8 +22,8 @@ module.exports = async function (context, req) {
 }
 
 async function analyzeImage(img){
-    const subscriptionKey = process.env.SUBSCRIPTIONKEY;
-    const uriBase = process.env.ENDPOINT + '/face/v1.0/detect';
+    const subscriptionKey = '87876c9098b14b21b39b0a541f7c3599' //process.env.SUBSCRIPTIONKEY;
+    const uriBase = 'https://serverlessweek2gettingemotional.cognitiveservices.azure.com/face/v1.0/detect' //process.env.ENDPOINT + '/face/v1.0/detect';
 
     let params = new URLSearchParams({
         'returnFaceId': 'true',
@@ -46,7 +46,7 @@ async function analyzeImage(img){
 
 async function findGifs(emotion) {
     const giphykey = process.env.giphykey;
-    const apiResult = await fetch ("https://api.giphy.com/v1/gifs/translate?api_key=" + giphykey + "&s=" + emotion);
+    let gifresponse = await fetch("https://api.giphy.com/v1/gifs/translate?api_key=" + giphykey + "&s=" + emotion);
     let gifresp = await gifresponse.json();
     return gifresp.data.url;
 }
