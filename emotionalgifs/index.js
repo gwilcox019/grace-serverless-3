@@ -1,4 +1,5 @@
 var multipart = require('parse-multipart');
+var fetch = require('node-fetch');
 
 module.exports = async function (context, req) {
     var boundary = multipart.getBoundary(req.headers['content-type']);
