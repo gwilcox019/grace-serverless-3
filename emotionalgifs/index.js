@@ -16,7 +16,7 @@ module.exports = async function (context, req) {
         body: main_emotion
     };
     console.log(result);
-    console.done();
+    context.done();
 }
 
 async function analyzeImage(img){
