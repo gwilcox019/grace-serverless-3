@@ -7,35 +7,44 @@ module.exports = async function (context, req) {
     // get image from POST request
     var boundary = multipart.getBoundary(req.headers['content-type']);
     var body = req.body;
-    var parsedBody = multipart.Parse(body, boundary);
+    var responseMessage = "";
 
-    // determine filetype for extension
-    var filetype = parsedBody[0].type;
-    if (filetype == "image/png") {
-        ext = "png";
-    } else if (filetype == "image/jpeg") {
-        ext = "jpg";
-    } else {
-        username = "invalidimage"
-        ext = "";
+    // check that body has image
+    if (body == null) { // body is empty
+        responseMessage = "Sorry! No image attached.";
+    } else { // body has image
+        // get codename for image
+        var password = req.headers['codename'];
+        // use parse-multipart to parse the body
+        var parsedBody = multipart.Parse(body, boundary);
+        // determine filetype for extension
+        var filetype = parsedBody[0].type;
+        if (filetype == "image/png") {
+         ext = "png";
+        } else if (filetype == "image/jpeg") {
+            ext = "jpg";
+        } else {
+            username = "invalidimage"
+            ext = "";
+        }
+        // upload file
+        responseMessage = await uploadFile(parsedBody, ext, password);
     }
 
-    // upload file
-    var responseMessage = await uploadFile(parsedBody, ext);
     context.res = {
         body: responseMessage
     };
 }
 
-// upload given file (parsedBody) to given extension
-async function uploadFile(parsedBody, ext) {
+// upload given file (parsedBody) to given extension undergiven name
+async function uploadFile(parsedBody, ext, password) {
     // get access to existing container
     const blobServiceClient = BlobServiceClient.fromConnectionString(connectionString);
     const containerName = process.env.CONTAINER_NAME;
     const containerClient = blobServiceClient.getContainerClient(containerName);    // Get a reference to a container
 
     // create container with given extension
-    const blobName = 'test.' + ext;    // Create the container
+    const blobName = password + ext;    // Create the container
     const blockBlobClient = containerClient.getBlockBlobClient(blobName); // Get a block blob client
 
     // upload data
