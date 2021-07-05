@@ -1,0 +1,18 @@
+{
+  "name": "bunnimage-upload",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@azure/storage-blob": "^12.2.1",
+    "node-fetch": "^2.6.1",
+    "parse-multipart": "^1.0.4"
+  },
+  "devDependencies": {},
+  "description": ""
+}
