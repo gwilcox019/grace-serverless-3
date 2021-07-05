@@ -1,13 +1,45 @@
+var multipart = require("parse-multipart")
+const connectionString = process.env.AZURE_STORAGE_CONNECTION_STRING;
+const { BlobServiceClient } = require("@azure/storage-blob");
+
 module.exports = async function (context, req) {
-    context.log('JavaScript HTTP trigger function processed a request.');
 
-    const name = (req.query.name || (req.body && req.body.name));
-    const responseMessage = name
-        ? "Hello, " + name + ". This HTTP triggered function executed successfully."
-        : "This HTTP triggered function executed successfully. Pass a name in the query string or in the request body for a personalized response.";
+    // get image from POST request
+    var boundary = multipart.getBoundary(req.headers['content-type']);
+    var body = req.body;
+    var parsedBody = multipart.Parse(body, boundary);
 
+    // determine filetype for extension
+    var filetype = parsedBody[0].type;
+    if (filetype == "image/png") {
+        ext = "png";
+    } else if (filetype == "image/jpeg") {
+        ext = "jpg";
+    } else {
+        username = "invalidimage"
+        ext = "";
+    }
+
+    // upload file
+    var responseMessage = await uploadFile(parsedBody, ext);
     context.res = {
-        // status: 200, /* Defaults to 200 */
         body: responseMessage
     };
+}
+
+// upload given file (parsedBody) to given extension
+async function uploadFile(parsedBody, ext) {
+    // get access to existing container
+    const blobServiceClient = BlobServiceClient.fromConnectionString(connectionString);
+    const containerName = process.env.CONTAINER_NAME;
+    const containerClient = blobServiceClient.getContainerClient(containerName);    // Get a reference to a container
+
+    // create container with given extension
+    const blobName = 'test.' + ext;    // Create the container
+    const blockBlobClient = containerClient.getBlockBlobClient(blobName); // Get a block blob client
+
+    // upload data
+    const uploadBlobResponse = await blockBlobClient.upload(parsedBody[0].data, parsedBody[0].data.length);
+
+    return "file saved";
 }
