@@ -5,7 +5,6 @@ const { BlobServiceClient } = require("@azure/storage-blob");
 module.exports = async function (context, req) {
 
     // get image from POST request
-    var boundary = multipart.getBoundary(req.headers['content-type']);
     var body = req.body;
     var responseMessage = "";
 
@@ -16,6 +15,7 @@ module.exports = async function (context, req) {
         // get codename for image
         var password = req.headers['codename'];
         // use parse-multipart to parse the body
+        var boundary = multipart.getBoundary(req.headers['content-type']);
         var parsedBody = multipart.Parse(body, boundary);
         // determine filetype for extension
         var filetype = parsedBody[0].type;
