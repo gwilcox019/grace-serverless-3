@@ -31,5 +31,4 @@ async function deleteBlob(filename) {
         }
     };
     return result;
-    
 }
