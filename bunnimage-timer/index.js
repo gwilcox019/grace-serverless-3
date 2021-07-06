@@ -18,7 +18,7 @@ module.exports = async function (context, myTimer) {
 
 async function deleteBlob(filename) {
     const blobServiceClient = await BlobServiceClient.fromConnectionString(connectionstring);
-    const deletecontainer = "images"; // name of container where the file to be deleted is conatined
+    const deletecontainer = containerName; // name of container where the file to be deleted is conatined
     const deletecontainerClient = await blobServiceClient.getContainerClient(deletecontainer);
     const deleteblockBlobClient = deletecontainerClient.getBlockBlobClient(filename);
     const downloadBlockBlobResponse = await deleteblockBlobClient.download(0); // 0 refers to the position of the blob to download
