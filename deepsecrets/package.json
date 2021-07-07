@@ -1,7 +1,6 @@
 {
   "name": "deepsecrets",
   "version": "1.0.0",
-  "description": "",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -10,6 +9,9 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@azure/cosmos": "^3.11.5",
     "querystring": "^0.2.1"
-  }
+  },
+  "devDependencies": {},
+  "description": ""
 }
