@@ -3,8 +3,8 @@ const { BlobServiceClient } = require("@azure/storage-blob");
 const containerName = process.env.CONTAINER_NAME;
 
 module.exports = async function (context, myTimer) {
-    const blobServiceClient = await BlobServiceClient.fromConnectionString(connectionstring);
-    const deletecontainer = "images";
+    const blobServiceClient = await BlobServiceClient.fromConnectionString(connectionString);
+    const deletecontainer = "wilcoxserverless";
     const deletecontainerClient = await blobServiceClient.getContainerClient(deletecontainer);
 
     for await (const blob of deletecontainerClient.listBlobsFlat()) {
@@ -17,8 +17,8 @@ module.exports = async function (context, myTimer) {
 };
 
 async function deleteBlob(filename) {
-    const blobServiceClient = await BlobServiceClient.fromConnectionString(connectionstring);
-    const deletecontainer = containerName; // name of container where the file to be deleted is conatined
+    const blobServiceClient = await BlobServiceClient.fromConnectionString(connectionString);
+    const deletecontainer = "wilcoxserverless"; // name of container where the file to be deleted is conatined
     const deletecontainerClient = await blobServiceClient.getContainerClient(deletecontainer);
     const deleteblockBlobClient = deletecontainerClient.getBlockBlobClient(filename);
     const downloadBlockBlobResponse = await deleteblockBlobClient.download(0); // 0 refers to the position of the blob to download
