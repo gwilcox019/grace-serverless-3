@@ -4,7 +4,7 @@ module.exports = async function (context, req) {
     var username = req.headers['username'];
     var download = ""
     var downloadpng = "https://wilcoxserverless1.blob.core.windows.net/wilcoxserverless/" + username + ".png";
-    var downloadjpg = "https://wilcoxserverless1.blob.core.windows.net/wilcoxserverless/" + username + ".jpeg";
+    var downloadjpg = "https://wilcoxserverless1.blob.core.windows.net/wilcoxserverless/" + username + ".jpg";
 
     let pngresp = await fetch(downloadpng, {
         method: 'GET',
