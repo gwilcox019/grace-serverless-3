@@ -11,8 +11,8 @@ const config = {
 module.exports = async function (context, req) {
     const queryObject = querystring.parse(req.body);
     let message = queryObject.Body;
-    let document = {"message" : message}
-    let items = await createDocument(document)
+    let document = {"message" : message};
+    let items = await createDocument(document);
 
     const responseMessage = `Thanks 😊! Stored your secret "${message}". 😯 Someone confessed that: ${JSON.stringify(items[0].message)}`;
 }
