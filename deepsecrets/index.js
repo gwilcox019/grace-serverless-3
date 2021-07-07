@@ -15,6 +15,9 @@ module.exports = async function (context, req) {
     let items = await createDocument(document);
 
     const responseMessage = `Thanks 😊! Stored your secret "${message}". 😯 Someone confessed that: ${JSON.stringify(items[0].message)}`;
+    context.res = {
+        body: responseMessage
+    };
 }
 
 // creates database and container if they do not already exist
@@ -25,11 +28,9 @@ async function create(client) {
     });
     
     // make container
-    const { container } = await client
-    .database(config.databaseId)
-    .containers.createIfNotExists(
-        { id: config.containerId, key: config.partitionKey },
-        { offerThroughput: 400 }
+    const { container } = await client.database(config.databaseId).containers.createIfNotExists(
+            { id: config.containerId, key: config.partitionKey },
+            { offerThroughput: 400 }
     );
 }
 
@@ -37,9 +38,9 @@ async function create(client) {
 async function createDocument(newItem) {
     var { endpoint, key, databaseId, containerId } = config;
     const client = new CosmosClient({endpoint, key});
+    await create(client);
     const database = client.database(databaseId);
     const container = database.container(containerId);
-    await create(client, databaseId, containerId);
 
     const querySpec = {
         query: "SELECT top 1 * FROM c order by c._ts desc"
