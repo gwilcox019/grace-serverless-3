@@ -1,7 +1,7 @@
 const { pathToFileURL } = require("node:url");
 const fetch = require('node-fetch');
 
-function getImage(event) {
+async function getImage(event) {
     event.preventDefault();
     if(document.getElementById('name').value != ''){
         $('#output').text("Thanks!");
