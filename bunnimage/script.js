@@ -1,5 +1,4 @@
 const { pathToFileURL } = require("node:url");
-const fetch = require('node-fetch');
 
 async function getImage(event) {
     event.preventDefault();
