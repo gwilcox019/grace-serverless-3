@@ -10,8 +10,8 @@ async function getImage(event) {
     }
     
     var payload = new FormData();
-    const file = document.getElementById("myform").files[0]; // fileInput is the file upload input element
-    payload.append(document.getElementById('name').value, file);
+   // const file = document.getElementById("myform").files[0]; // fileInput is the file upload input element
+    payload.append(document.getElementById('name').value, document.getElementById('image'));
     
     var myHeaders = new Headers();
     myHeaders.append('content-type', 'file')
