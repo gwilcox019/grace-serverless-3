@@ -1,31 +1,48 @@
-//const { pathToFileURL } = require("node:url");
-
 async function getImage(event) {
-    event.preventDefault();
-    if(document.getElementById('name').value != ''){
+    //event.preventDefault(); // keeps page from refreshing
+    // check that there is name input
+    if(document.getElementById('username').value != ''){
         $('#output').text("Thanks!");
+        // create form data object from file upload
+        var payload = new FormData();
+        payload.append("file", document.getElementById("image").files[0]);
+
+        // send post request
+        try {
+            const response = await fetch('https://wilcox-serverless-1.azurewebsites.net/api/bunnimage-upload?code=gT38MPUIena5VZ287xpoF3LDoC4ceWwCPATmTfYdNxsnMdyt3mE59g==', {
+                method: 'POST',
+                body: payload, 
+                headers: {
+                    'codename' : document.getElementById('username').value
+                }
+            });  
+            $('#output').text("Your image has been stored successfully!");       
+        } catch (e) {
+            alert("an error occurred");
+        } 
     }
     else {
         alert("No name error.");
     }
-    
-    var payload = new FormData();
-   // const file = document.getElementById("myform").files[0]; // fileInput is the file upload input element
-    payload.append(document.getElementById('name').value, document.getElementById('image'));
-    
-    var myHeaders = new Headers();
-    myHeaders.append('content-type', 'file')
-    myHeaders.append('codename', document.getElementById('name').value)
-    try {
-        const response = await fetch(process.env.bunnimage_upload_url, {
-            method: 'POST',
-            body: payload, 
-            headers: myHeaders
-         });         
-    } catch (e) {
-        alert("an error occurred");
-    }
+}
 
-    $('#output').text("Your image has been stored successfully!");
-    
+async function downloadImage() {
+    if(document.getElementById('downloadusername').value != ''){
+        $('#output').text("Thanks!");
+        try {
+            const response = await fetch('https://wilcox-serverless-1.azurewebsites.net/api/bunnimage-download?code=v5VZDxyEfBF/DeeRHiej0t/PFlTp21HPxCczinbnC4dPr8Zx84e1ug==', {
+                method: 'GET',
+                headers: {
+                    'username' : document.getElementById('downloadusername').value
+                }
+            });
+            $('#output').text("Your image has been found!");
+            let data = await response.json();
+            window.open(data.downloadUri, "_self");
+        } catch(e) {
+            alert("an error occurred");
+        }
+    } else {
+        alert("No name error.");
+    }
 }

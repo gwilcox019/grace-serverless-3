@@ -8,10 +8,12 @@
   <body>
       <div>
               <h1 id="h1">Give your code some love ❤️</h1>
-              <form id="myform" onsubmit="getImage(event)" enctype="multipart/form-data">
+              <form id="myform" enctype="multipart/form-data">
                   <input type="file" id="image" accept="image/x-png,image/jpeg" name="image"></input>
-                  <input type="text" id="name" name="name" placeholder="Enter your file's name"/><br>
-                  <input value="Submit" type="submit" />
+                  <input type="text" id="username" name="name" placeholder="Enter your file's name"/><br>
+                  <input id="button1" onclick="getImage()" value="Submit" type="button" />
+                  <input type="text" id="downloadusername" name="name" placeholder="Enter your file's name"/><br>
+                  <input id="button2" onclick="downloadImage()" value="Submit" type="button" />
               </form>
               <br/>
               <div id="output"></div>
