@@ -1,4 +1,4 @@
-//const { pathToFileURL } = require("node:url");
+import { pathToFileURL } from "node:url";
 
 async function getImage(event) {
     event.preventDefault();
