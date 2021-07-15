@@ -1,4 +1,4 @@
-import { pathToFileURL } from "node:url";
+//const { pathToFileURL } = require("node:url");
 
 async function getImage(event) {
     event.preventDefault();
@@ -9,13 +9,12 @@ async function getImage(event) {
         alert("No name error.");
     }
     
-    var bunniForm = document.getElementById("myform");
-    var payload = new FormData(bunniForm);
-    const file = fileInput.files[0]; // fileInput is the file upload input element
+    var payload = new FormData();
+    const file = document.getElementById("myform").files[0]; // fileInput is the file upload input element
     payload.append(document.getElementById('name').value, file);
     
     var myHeaders = new Headers();
-    myHeaders.appends('content-type', 'file')
+    myHeaders.append('content-type', 'file')
     myHeaders.append('codename', document.getElementById('name').value)
     try {
         const response = await fetch(process.env.bunnimage_upload_url, {
