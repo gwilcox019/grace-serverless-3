@@ -14,7 +14,7 @@
 * [Week 4](https://github.com/bitprj/intro-to-serverless/#week-4---building-a-frontend)
 * [Week 5-8: Build your Own Project](https://github.com/bitprj/intro-to-serverless/#week-5---brainstorming--proposals-)
 
-## :zap: Learn about Azure Functions! (Week 1-4)
+## :zap: Learn about Azure Functions (Week 1-4)
 
 ### **Week 1** - Get Started with Azure Functions!
 Build projects to get started with Azure Functions, Cloud Engineering, and Javascript! In addition, set up your development environment with various developer tools like Github and Postman. 
