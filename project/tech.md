@@ -41,4 +41,4 @@
 
 ### Flowchart
 
-[Replace with image of final flowchart]
+<img width="866" alt="Screen Shot 2021-07-22 at 17 40 28" src="https://user-images.githubusercontent.com/78289483/126713110-44a3f3d9-7826-4100-800e-f46903fed27e.png">
