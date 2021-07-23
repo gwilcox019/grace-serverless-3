@@ -1,13 +1,24 @@
-module.exports = async function (context, req) {
-    context.log('JavaScript HTTP trigger function processed a request.');
+const fetch = require('node-fetch');
 
-    const name = (req.query.name || (req.body && req.body.name));
-    const responseMessage = name
-        ? "Hello, " + name + ". This HTTP triggered function executed successfully."
-        : "This HTTP triggered function executed successfully. Pass a name in the query string or in the request body for a personalized response.";
+module.exports = async function (context, req) {
+
+    const start = req.query.start;
+    const destination = req.query.destination;
+    const numRoutes = req.query.numRoutes;
+
+    let resp = await fetch("http://www.mapquestapi.com/directions/v2/alternateroutes?key=" + process.env.MAPQUEST_KEY, {
+        method: 'POST',
+        "locations": [
+             start,
+             destination
+        ],
+        "maxRoutes": numRoutes,
+        "timeOverage": 100
+    });
+    
+    data = await resp.json();
 
     context.res = {
-        // status: 200, /* Defaults to 200 */
-        body: responseMessage
+        body: data
     };
 }
