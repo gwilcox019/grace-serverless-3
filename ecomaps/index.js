@@ -3,10 +3,8 @@ const fetch = require('node-fetch');
 module.exports = async function (context, req) {
 
     let params = new URLSearchParams({
-        "locations" : [
-            req.query.destination,
-            req.query.start
-        ],
+        "from" : req.query.start,
+        "to" : req.query.destination,
         "numRoutes" : req.query.numRoutes,
         "timeOverage" : 100
     })
