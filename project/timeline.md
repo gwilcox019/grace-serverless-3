@@ -26,8 +26,8 @@
 - 10 mins
 
 #### Objective:
-- [ ] Create and deploy HTTP trigger function
-- [ ] Make sure function is correctly saved to Azure function app
+- [ ] Create and deploy HTTP trigger function -> 2 min
+- [ ] Make sure function is correctly saved to Azure function app -> 5 min
 
 ### MapQuest API:
 
@@ -35,12 +35,13 @@
 - Send post request to MapQuest with start and end locations and receive back potential routes
 
 #### ETA:
-- 20 min (+ debug time)
+- 3-4 hrs
 
 #### Objective:
-- [ ] Get access to the API key (set up account?)
-- [ ] Send POST request with start and end locations, number of routes
-- [ ] Get data back in readable format and have access to distance for each route
+- [ ] Get access to the API key (set up account?) -> 10 min
+- [ ] Send POST request with start and end locations, number of routes via Postman -> 1 hr
+- [ ] Code POST request to MapQuest API in Azure function, test with Postman -> 1 hr
+- [ ] Organize response to include session ID and distance for each route -> 1 hr
 
 ### Carbon Interface API:
 
@@ -48,12 +49,14 @@
 - Send post request to Carbon Interface with vehicle information and distance and receive back carbon emissions for each route
 
 #### ETA:
-- 30 min (+ debug time)
+- 3-4 hrs (+ debug time)
 
 #### Objective:
-- [ ] Get access to the API key (set up account?)
-- [ ] Send POST request with vehicle information, distance (from MapQuest request) for each route
-- [ ] Receive back carbon emissions per route
+- [ ] Get access to the API key (set up account?) -> 10 min
+- [ ] Send POST request with vehicle information, distance to Carbon Interface API via Postman -> 1 hr
+- [ ] Write function that sends that POST request from Azure Function, test with Postman -> 1 hr
+- [ ] Create loop that calls that function for each route received from MapQuest -> 30 min
+- [ ] Organize carbon emission estimates -> 30 min
 
 ## Week 3 - FRONT END
 
@@ -63,13 +66,15 @@
 - Make the basic webpage that users will interact with
 
 #### ETA:
-- 20 min
+- 2-3 hrs
 
 #### Objective:
-- [ ] Create standard HTML page with the following data entry points:
+- [ ] Create visual graphic of UI -> 1 hr
+- Start with standard HTML page with the following data entry points (to match the graphic): -> 1 hr
 - [ ] Drop down with vehicle make/model options
 - [ ] Text option to submit starting and ending locations
 - [ ] Output to show carbon emissions for each route
+- [ ] Add map from MapQuest.js -> 30 min
 
 ### Connect to back end:
 
@@ -77,40 +82,30 @@
 - Create script.js file that allows the HTML page to interact with the back end
 
 #### ETA:
-- 30 min (+ debug time)
+- 6 hrs
 
 #### Objective:
-- [ ] Create script.js that sends a post request to the back end azure function
-- [ ] Request should include vehicle information and starting and ending locations
-- [ ] Once routes and carbon data are returned, update webpage
-
-### Map!:
-
-#### Description
-- Display (interactive?) map and have it show the potential routes returned by MapQuest request
-
-#### ETA:
-- 1 hr (+ debugging)
-
-#### Objective:
-> Hoping to work on this during a mentor meeting/work session
-- [ ] Not yet sure what this will all involve, will need help from mentor
+- [ ] Create script.js that sends a post request to the back end Azure function on submit -> 1 hr
+- [ ] Add carbon emissions data to webpage upon return from Azure function -> 1 hr
+- [ ] Use session ID from Azure function to get a routeShape from MapQuest.js in Postman -> 1 hr
+- [ ] Write code to send routeShape request and create directionsLayer from script.js -> 1 hr
+- [ ] Test (and probably debug) entire mechanism via LiveServer! -> 2 hrs
 
 ## Week 4 - FINISHING TOUCHES
 
-### Testing:
+### Testing and debugging:
 
 #### Description
-- Finish up any left over debugging, continue work as needed on the map functionality
+- Finish up any left over debugging and account for all potential errors
 
 #### ETA:
 - 1-2 hrs (debugging as needed)
 
 #### Objective:
-> Main things to test using Postman (back end) and LiveServer (front end)
-- [ ] Back end functionality (requests to both APIs)
-- [ ] Front end functionality (catching improper input, proper data display)
-- [ ] Map?
+> Main things to check for:
+- [ ] APIs are down/ratelimiting
+- [ ] Azure is down
+- [ ] Improper user input (locations, vehicle info, # of routes)
 
 ### Make it pretty:
 
