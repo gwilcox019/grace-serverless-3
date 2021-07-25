@@ -17,7 +17,7 @@
 
 **Carbon Interface**
 - Calculates carbon emission estimate for each route given distance and vehicle data
-- Will display these estimates on the map
+- Will display these estimates associated with each route
 
 ### Packages/Libraries/Databases
 
@@ -46,8 +46,9 @@ After the user submits their vehicle information and starting and ending locatio
 <img width="1022" alt="Screen Shot 2021-07-24 at 21 40 04" src="https://user-images.githubusercontent.com/78289483/126884937-5680c1c5-27fe-42d0-ae7f-21515a1a8c14.png">
 
 Links for resources:
-MapQuest alternate routes: https://developer.mapquest.com/documentation/directions-api/alternate-routes/post/
-MapQuest routeShape: https://developer.mapquest.com/documentation/mapquest-js/v1.3/l-mapquest-directions-routeshape/
-MapQuest directionsLayer: https://developer.mapquest.com/documentation/mapquest-js/v1.3/l-mapquest-directions-layer/
-Carbon Interface vehicle estimate: https://docs.carboninterface.com/#/?id=vehicle
+
+- MapQuest alternate routes: https://developer.mapquest.com/documentation/directions-api/alternate-routes/post/
+- MapQuest routeShape: https://developer.mapquest.com/documentation/mapquest-js/v1.3/l-mapquest-directions-routeshape/
+- MapQuest directionsLayer: https://developer.mapquest.com/documentation/mapquest-js/v1.3/l-mapquest-directions-layer/
+- Carbon Interface vehicle estimate: https://docs.carboninterface.com/#/?id=vehicle
 

@@ -49,7 +49,7 @@
 - Send post request to Carbon Interface with vehicle information and distance and receive back carbon emissions for each route
 
 #### ETA:
-- 3-4 hrs (+ debug time)
+- 3-4 hrs 
 
 #### Objective:
 - [ ] Get access to the API key (set up account?) -> 10 min
