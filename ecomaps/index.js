@@ -10,9 +10,6 @@ module.exports = async function (context, req) {
         "timeOverage" : 100
     })
 
-    var urlpath = "http://www.mapquestapi.com/directions/v2/alternateroutes?key=" + process.env.MAPQUEST_KEY + '&' + params.toString();
-    context.log(urlpath);
-
     // request routes from mapquest
     let resp = await fetch("http://www.mapquestapi.com/directions/v2/alternateroutes?key=" + process.env.MAPQUEST_KEY + '&' + params.toString(), {
         method: 'POST',
