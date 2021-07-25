@@ -12,7 +12,8 @@
 - Generates quickest routes using Alternate Routes post request given start and end points
 - Shows map that indicates those routes
     -> MapQuest.js to show map
-    -> Still researching how to display routes
+    -> Get routes from original request using session ID and routeShape request
+    -> Display response as a directionsLayer object
 
 **Carbon Interface**
 - Calculates carbon emission estimate for each route given distance and vehicle data
@@ -40,5 +41,13 @@
 - Final responses will be displayed to website via JS function that manipulates the HTML/CSS as needed
 
 ### Flowchart
+After the user submits their vehicle information and starting and ending locations, the JavaScript function is called which sends the user input to the HTTP trigger Azure function via a post request. The MapQuest API is called to get the desired routes, and the distance from each route is then used in a call to the Carbon Interface API to get the carbon estimates for each route. The session ID and  information is returned to the JavaScript function, which uses the session ID to have MapQuest.js display the routes on a map. The carbon estimate is then displayed along side the map.
 
-<img width="866" alt="Screen Shot 2021-07-22 at 17 40 28" src="https://user-images.githubusercontent.com/78289483/126713110-44a3f3d9-7826-4100-800e-f46903fed27e.png">
+<img width="1022" alt="Screen Shot 2021-07-24 at 21 40 04" src="https://user-images.githubusercontent.com/78289483/126884937-5680c1c5-27fe-42d0-ae7f-21515a1a8c14.png">
+
+Links for resources:
+MapQuest alternate routes: https://developer.mapquest.com/documentation/directions-api/alternate-routes/post/
+MapQuest routeShape: https://developer.mapquest.com/documentation/mapquest-js/v1.3/l-mapquest-directions-routeshape/
+MapQuest directionsLayer: https://developer.mapquest.com/documentation/mapquest-js/v1.3/l-mapquest-directions-layer/
+Carbon Interface vehicle estimate: https://docs.carboninterface.com/#/?id=vehicle
+
