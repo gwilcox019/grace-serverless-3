@@ -17,30 +17,37 @@ module.exports = async function (context, req) {
     
     data = await resp.json();
     
-    // get arrays for distances, session IDs
+    // get arrays for distances, session IDs, times
     const distances = [];
     const sessionIDs = [];
+    const times = []
 
     distances[0] = data.route.distance;
     sessionIDs[0] = data.route.sessionId;
-    for (i = 0; i < req.query.maxRoutes - 1; i++) {
+    times[0] = data.route.realTime;
+    for (i = 0; i < data.route.alternateRoutes.length; i++) {
         distances[i + 1] = data.route.alternateRoutes[i].route.distance;
         sessionIDs[i + 1] = data.route.alternateRoutes[i].route.sessionId;
+        times[i + 1] = data.route.alternateRoutes[i].route.realTime;
     }
 
     // get arrays of estimates for each route
     let estimates = [];
     for (i = 0; i < distances.length; i++) {
-        estimates[i] = await carbonEstimate(distances[i]);
+        estimates[i] = await carbonEstimate(distances[i], req.query.modelID);
     }
 
     context.res = {
-        body: estimates
+        body: { estimates,
+            times,
+            sessionIDs
+        }
     };
 }
 
-async function carbonEstimate(distance) {
-    // need a way to get vehicle id from model?
+// gets carbon estimate in lbs of CO2 for given distance, car model from Carbon Interface API
+async function carbonEstimate(distance, modelID) {
+
     let resp = await fetch("https://www.carboninterface.com/api/v1/estimates", {
         method: 'POST',
         headers: {
@@ -50,7 +57,7 @@ async function carbonEstimate(distance) {
             "type": "vehicle",
             "distance_unit": "mi",
             "distance_value": distance,
-            "vehicle_model_id": "7268a9b7-17e8-4c8d-acca-57059252afe9"
+            "vehicle_model_id": modelID
         })
     })
 
