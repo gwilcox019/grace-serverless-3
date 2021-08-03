@@ -16,6 +16,8 @@ module.exports = async function (context, req) {
     });
     
     data = await resp.json();
+
+    console.log(data);
     
     // get arrays for distances, session IDs, times
     const distances = [];
@@ -24,11 +26,11 @@ module.exports = async function (context, req) {
 
     distances[0] = data.route.distance;
     sessionIDs[0] = data.route.sessionId;
-    times[0] = data.route.realTime;
+    times[0] = data.route.formattedTime;
     for (i = 0; i < data.route.alternateRoutes.length; i++) {
         distances[i + 1] = data.route.alternateRoutes[i].route.distance;
         sessionIDs[i + 1] = data.route.alternateRoutes[i].route.sessionId;
-        times[i + 1] = data.route.alternateRoutes[i].route.realTime;
+        times[i + 1] = data.route.alternateRoutes[i].route.formattedTime;
     }
 
     // get arrays of estimates for each route
@@ -40,7 +42,8 @@ module.exports = async function (context, req) {
     context.res = {
         body: { estimates,
             times,
-            sessionIDs
+            sessionIDs,
+            distances
         }
     };
 }
@@ -60,7 +63,7 @@ async function carbonEstimate(distance, modelID) {
             "vehicle_model_id": modelID
         })
     })
+    estimateData = await resp.json(); 
 
-    estimateData = await resp.json();
     return estimateData.data.attributes.carbon_lb;
 }
