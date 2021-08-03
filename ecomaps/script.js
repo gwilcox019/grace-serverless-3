@@ -1,7 +1,13 @@
 window.onload = getVehicleMakes();
 let makesData;
 let modelsData;
+
+$(document).ready(function() {
+    $('.search').select2();
+});
+
 async function getVehicleMakes() {
+
     var vehicleMakeDropDown = document.getElementById("vehicleMakeDropDown");
 
     let resp = await fetch('https://www.carboninterface.com/api/v1/vehicle_makes', {
@@ -33,10 +39,12 @@ async function getVehicleModels() {
 
     for (i = 0; i < modelsData.length; i++) {
         var model = modelsData[i].data.attributes.name + " " + modelsData[i].data.attributes.year;
-        var item = document.createElement("option");
-        item.text = model;
-        item.value = i;
-        vehicleModelDropDown.add(item);
+        if (i > 0 && model != modelsData[i - 1].data.attributes.name + " " + modelsData[i - 1].data.attributes.year) {
+            var item = document.createElement("option");
+            item.text = model;
+            item.value = i;
+            vehicleModelDropDown.add(item);
+        }
     } 
 }
 
