@@ -73,8 +73,8 @@ async function sendData() {
     let modelID = modelsData[modelIndex].data.id;*/
 
     let params = new URLSearchParams({
-        "start" : "Columbus, OH",
-        "destination" : "Cleveland, OH",
+        "start" : document.getElementById("start"),
+        "destination" : document.getElementById("destination"),
         "maxRoutes" : 3,
         //"modelID" : modelID
         "modelID" : "randomID"
@@ -88,6 +88,31 @@ async function sendData() {
     console.log(data);
 
     showRoutes();
+
+    let table = document.getElementById("results");
+    for (i = 0; i < data.distances.length; i++) {
+        var row = table.insertRow(-1);
+
+        var cell1 = row.insertCell(-1);
+        var name = document.createElement("td");
+        name.text = i + 1;
+        cell1.appendChild(name);
+
+        var cell2 = row.insertCell(-1);
+        var time = document.createElement("td");
+        time.text = data.times[i];
+        cell2.appendChild(time);
+
+        var cell3 = row.insertCell(-1);
+        var distance = document.createElement("td");
+        distance.text = data.distances[i];
+        cell3.appendChild(distance);
+
+        var cell4 = row.insertCell(-1);
+        var estimate = document.createElement("td");
+        estimate.text = data.estimates[i];
+        cell4.appendChild(estimate);
+    }
 }
 
 function showRoutes() {
@@ -95,17 +120,17 @@ function showRoutes() {
 
     var directions = L.mapquest.directions();
     directions.route({
-      start: 'San Francisco, CA',
-      end: 'San Jose, CA',
+      start: document.getElementById("start").value,
+      end: document.getElementById("destination").value,
       options: {
           timeOverage: 100,
-          maxRoutes: 3,
+          maxRoutes: document.getElementById("numRoutes").value,
         }
     }, createMap);
 
     function createMap(err, response) {
       var map = L.mapquest.map('map', {
-        center: [37.7749, -122.4194],
+        center: [0, 0],
         layers: L.mapquest.tileLayer('map'),
         zoom: 12
       });
@@ -125,8 +150,8 @@ function showRoutes() {
           icon: 'circle',
           iconOptions: {
             size: 'sm',
-            primaryColor: '#e9304f',
-            secondaryColor: '#e9304f',
+            primaryColor: '#1fc715',
+            secondaryColor: '#1fc715',
             symbol: 'B'
           },
           title: 'Drag to change location'
@@ -139,37 +164,7 @@ function showRoutes() {
         directionsResponse: response
       });
 
-      var customLayer1 = L.mapquest.directionsLayer({
-        startMarker: {
-          icon: 'circle',
-          iconOptions: {
-            size: 'sm',
-            primaryColor: '#1fc715',
-            secondaryColor: '#1fc715',
-            symbol: 'A'
-          },
-          title: 'Drag to change location'
-        },
-        endMarker: {
-          icon: 'circle',
-          iconOptions: {
-            size: 'sm',
-            primaryColor: '#e9304f',
-            secondaryColor: '#e9304f',
-            symbol: 'B'
-          },
-          title: 'Drag to change location'
-        },
-        routeRibbon: {
-          color: "#FF0000",
-          opacity: 1.0,
-          showTraffic: false
-        },
-        directionsResponse: response.route.alternateRoutes[0]
-      });
-
       customLayer.addTo(map);
-      customLayer1.addTo(map);
       
       customLayer.on('route_selected', function(eventResponse) {
         console.log(eventResponse);
