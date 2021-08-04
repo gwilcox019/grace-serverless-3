@@ -51,7 +51,7 @@ module.exports = async function (context, req) {
 // gets carbon estimate in lbs of CO2 for given distance, car model from Carbon Interface API
 async function carbonEstimate(distance, modelID) {
 
-    let resp = await fetch("https://www.carboninterface.com/api/v1/estimates", {
+    /*let resp = await fetch("https://www.carboninterface.com/api/v1/estimates", {
         method: 'POST',
         headers: {
             "Authorization": "Bearer " + process.env.CARBONINTERFACE_KEY,
@@ -65,5 +65,7 @@ async function carbonEstimate(distance, modelID) {
     })
     estimateData = await resp.json(); 
 
-    return estimateData.data.attributes.carbon_lb;
+    return estimateData.data.attributes.carbon_lb;*/
+
+    return 150;
 }

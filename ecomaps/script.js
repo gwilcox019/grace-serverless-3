@@ -8,7 +8,7 @@ $(document).ready(function() {
 
 async function getVehicleMakes() {
 
-    var vehicleMakeDropDown = document.getElementById("vehicleMakeDropDown");
+    /*var vehicleMakeDropDown = document.getElementById("vehicleMakeDropDown");
 
     let resp = await fetch('https://www.carboninterface.com/api/v1/vehicle_makes', {
         method: 'GET',
@@ -22,11 +22,21 @@ async function getVehicleMakes() {
         item.text = make;
         item.value = i;
         vehicleMakeDropDown.add(item);
-    } 
+    } */
+
+    var vehicleMakeDropDown = document.getElementById("vehicleMakeDropDown");
+
+    var item1 = document.createElement("option");
+    item1.text = "Toyota";
+    vehicleMakeDropDown.add(item1);
+
+    var item2 = document.createElement("option");
+    item2.text = "Honda";
+    vehicleMakeDropDown.add(item2);
 }
 
 async function getVehicleModels() {
-    let makeIndex = document.getElementById("vehicleMakeDropDown").value;
+    /*let makeIndex = document.getElementById("vehicleMakeDropDown").value;
     let makeID = makesData[makeIndex].data.id;
 
     var vehicleModelDropDown = document.getElementById("vehicleModelDropDown");
@@ -45,18 +55,29 @@ async function getVehicleModels() {
             item.value = i;
             vehicleModelDropDown.add(item);
         }
-    } 
+    } */
+
+    var vehicleModelDropDown = document.getElementById("vehicleModelDropDown");
+
+    var item1 = document.createElement("option");
+    item1.text = "car1";
+    vehicleModelDropDown.add(item1);
+
+    var item2 = document.createElement("option");
+    item2.text = "car2";
+    vehicleModelDropDown.add(item2);
 }
 
 async function sendData() {
-    let modelIndex = document.getElementById("vehicleModelDropDown").value;
-    let modelID = modelsData[modelIndex].data.id;
+    /*let modelIndex = document.getElementById("vehicleModelDropDown").value;
+    let modelID = modelsData[modelIndex].data.id;*/
 
     let params = new URLSearchParams({
         "start" : "Columbus, OH",
         "destination" : "Cleveland, OH",
         "maxRoutes" : 3,
-        "modelID" : modelID
+        //"modelID" : modelID
+        "modelID" : "randomID"
     })
 
     let resp = await fetch("https://wilcox-final-project.azurewebsites.net/api/ecomaps?code=pta3QcaZ2Sau1QHzon7zKhHh3PA9gvjCa6ECgQGuaKleAkTSRs584A==" + '&' + params.toString(), {
