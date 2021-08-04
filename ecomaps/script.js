@@ -86,4 +86,93 @@ async function sendData() {
     data = await resp.json();
 
     console.log(data);
+
+    showRoutes();
 }
+
+function showRoutes() {
+    L.mapquest.key = '9UBCaLZa6RAYnOH5gKrOWperISGcAITh';
+
+    var directions = L.mapquest.directions();
+    directions.route({
+      start: 'San Francisco, CA',
+      end: 'San Jose, CA',
+      options: {
+          timeOverage: 100,
+          maxRoutes: 3,
+        }
+    }, createMap);
+
+    function createMap(err, response) {
+      var map = L.mapquest.map('map', {
+        center: [37.7749, -122.4194],
+        layers: L.mapquest.tileLayer('map'),
+        zoom: 12
+      });
+
+      var customLayer = L.mapquest.directionsLayer({
+        startMarker: {
+          icon: 'circle',
+          iconOptions: {
+            size: 'sm',
+            primaryColor: '#1fc715',
+            secondaryColor: '#1fc715',
+            symbol: 'A'
+          },
+          title: 'Drag to change location'
+        },
+        endMarker: {
+          icon: 'circle',
+          iconOptions: {
+            size: 'sm',
+            primaryColor: '#e9304f',
+            secondaryColor: '#e9304f',
+            symbol: 'B'
+          },
+          title: 'Drag to change location'
+        },
+        routeRibbon: {
+          color: "#00FF00",
+          opacity: 1.0,
+          showTraffic: false
+        },
+        directionsResponse: response
+      });
+
+      var customLayer1 = L.mapquest.directionsLayer({
+        startMarker: {
+          icon: 'circle',
+          iconOptions: {
+            size: 'sm',
+            primaryColor: '#1fc715',
+            secondaryColor: '#1fc715',
+            symbol: 'A'
+          },
+          title: 'Drag to change location'
+        },
+        endMarker: {
+          icon: 'circle',
+          iconOptions: {
+            size: 'sm',
+            primaryColor: '#e9304f',
+            secondaryColor: '#e9304f',
+            symbol: 'B'
+          },
+          title: 'Drag to change location'
+        },
+        routeRibbon: {
+          color: "#FF0000",
+          opacity: 1.0,
+          showTraffic: false
+        },
+        directionsResponse: response.route.alternateRoutes[0]
+      });
+
+      customLayer.addTo(map);
+      customLayer1.addTo(map);
+      
+      customLayer.on('route_selected', function(eventResponse) {
+        console.log(eventResponse);
+      });
+    }
+  }

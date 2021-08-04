@@ -1,6 +1,8 @@
 <!doctype html>
 <html lang="en">
     <head>
+        <script src="https://api.mqcdn.com/sdk/mapquest-js/v1.3.2/mapquest.js"></script>
+        <link type="text/css" rel="stylesheet" href="https://api.mqcdn.com/sdk/mapquest-js/v1.3.2/mapquest.css"/>
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     </head>
     <body>
@@ -12,7 +14,8 @@
             <label for="vehicleModelDropDown">Choose a vehicle model:</label> 
             <select class="search" name="vehicleModelDropDown" id="vehicleModelDropDown" style="width: 50%" onchange="sendData()">
             </select>
-          </div>
+        </div>
+        <div id="map" style="width: 100%; height: 530px;"></div>
     </body>
 </html>
 
