@@ -1,8 +1,9 @@
-window.onload = getVehicleMakes();
-let makesData;
-let modelsData;
-var map;
-let distances = [];
+window.onload = getVehicleMakes(); //autopopulate the vehicle makes and models dropdowns on load
+
+let makesData; // list of vehicle makes
+let modelsData; // list of vehicle models for the given make
+var map; // map
+let distances = []; // list of distances for each route
 
 $(document).ready(function() {
     document.getElementById("start").addEventListener('keyup', enableDisableSubmitButton );
@@ -116,14 +117,27 @@ async function sendData() {
 
     showRoutes();
 
+    let routesResp = await fetch('http://www.mapquestapi.com/directions/v2/alternateroutes?key=9UBCaLZa6RAYnOH5gKrOWperISGcAITh&from=' 
+        + startData + '&to=' + destData + '&maxRoutes=' + document.getElementById("numRoutes").value 
+        + '&timeOverage=100');
+    let routesInfo = await routesResp.json();
+
+    distances[0] = routesInfo.route.distance;
+    if (routesInfo.route.hasOwnProperty('alternateRoutes')) {
+      for (i = 0; i < routesInfo.route.alternateRoutes.length; i++) {
+          distances[i + 1] = routesInfo.route.alternateRoutes[i].route.distance;
+      }
+    }
+
     let modelIndex = document.getElementById("vehicleModelDropDown").value;
     let modelID = modelsData[modelIndex].data.id;
 
     let resp = await fetch("https://wilcox-final-project.azurewebsites.net/api/ecomaps?code=pta3QcaZ2Sau1QHzon7zKhHh3PA9gvjCa6ECgQGuaKleAkTSRs584A==", {
         method: 'POST',
-        body: {distances},
+        body: JSON.stringify(distances),
         headers: {
-            'modelID' : modelID
+            'modelID' : modelID,
+            'Content-Type' : 'application/json'
         }
     });
     data = await resp.json();
@@ -219,10 +233,5 @@ function showRoutes() {
       customLayer.on('route_selected', function(eventResponse) {
         console.log(eventResponse);
       });
-
-      distances[0] = response.route.distance;
-      for (i = 0; i < response.route.alternateRoutes.length; i++) {
-          distances[i + 1] = response.route.alternateRoutes[i].route.distance;
-      }
     }
   }

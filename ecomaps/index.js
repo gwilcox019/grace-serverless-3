@@ -9,7 +9,7 @@ module.exports = async function (context, req) {
     // get arrays of estimates for each route
     let estimates = [];
     for (i = 0; i < distances.length; i++) {
-        estimates[i] = await carbonEstimate(distances[i], req.headers['modelID']);
+        estimates[i] = await carbonEstimate(distances[i], req.headers['modelid']);
     }
 
     context.res = {
