@@ -1,18 +1,58 @@
 window.onload = getVehicleMakes();
 let makesData;
 let modelsData;
+var map;
+let distances = [];
 
 $(document).ready(function() {
-    $('.search').select2();
+    document.getElementById("start").addEventListener('keyup', enableDisableSubmitButton );
+    document.getElementById("destination").addEventListener('keyup', enableDisableSubmitButton );
+    enableDisableSubmitButton();
+    getVehicleMakes();
 });
+
+function disableButton() {
+    var btn = document.getElementById("button")
+    btn.setAttribute("disabled", null)
+}
+  
+function enableButton() {
+    var btn = document.getElementById("button")
+    btn.removeAttribute("disabled")
+  
+}
+  
+function DisableButtonAndShowProgress(){
+    disableButton();
+    var spinner = document.getElementById("btnspinner")
+    spinner.classList.remove("d-none")
+}
+  
+function EnableButtonAndHideProgress(){
+    enableButton();
+    var spinner = document.getElementById("btnspinner")
+    spinner.classList.add("d-none")
+}
+
+function enableDisableSubmitButton() {
+  var startData = document.getElementById("start").value;
+  var destData = document.getElementById("destination").value;
+  if (startData != "" && destData != "") {
+    document.getElementById("button").removeAttribute("disabled");
+  }
+  else {
+    document.getElementById("button").setAttribute("disabled", null);
+  }
+}
 
 async function getVehicleMakes() {
 
-    /*var vehicleMakeDropDown = document.getElementById("vehicleMakeDropDown");
+    disableButton();
+    var vehicleMakeDropDown = document.getElementById("vehicleMakeDropDown");
 
     let resp = await fetch('https://www.carboninterface.com/api/v1/vehicle_makes', {
         method: 'GET',
-        headers: {"Authorization": "Bearer yuOUDR0mdVvYdwadfdR7Sg"}
+        headers: {"Authorization": "Bearer oQrDMB0AYYOP94S2WuPQIA"}
     })
     makesData = await resp.json();
 
@@ -22,97 +62,105 @@ async function getVehicleMakes() {
         item.text = make;
         item.value = i;
         vehicleMakeDropDown.add(item);
-    } */
+    } 
 
-    var vehicleMakeDropDown = document.getElementById("vehicleMakeDropDown");
-
-    var item1 = document.createElement("option");
-    item1.text = "Toyota";
-    vehicleMakeDropDown.add(item1);
-
-    var item2 = document.createElement("option");
-    item2.text = "Honda";
-    vehicleMakeDropDown.add(item2);
+    getVehicleModels();
+    enableButton();
 }
 
 async function getVehicleModels() {
-    /*let makeIndex = document.getElementById("vehicleMakeDropDown").value;
+
+    disableButton();
+
+    let makeIndex = document.getElementById("vehicleMakeDropDown").value;
     let makeID = makesData[makeIndex].data.id;
 
     var vehicleModelDropDown = document.getElementById("vehicleModelDropDown");
 
     let resp = await fetch('https://www.carboninterface.com/api/v1/vehicle_makes/' + makeID + '/vehicle_models', {
         method: 'GET',
-        headers: {"Authorization": "Bearer yuOUDR0mdVvYdwadfdR7Sg"}
+        headers: {"Authorization": "Bearer oQrDMB0AYYOP94S2WuPQIA"}
     })
     modelsData = await resp.json();
 
-    for (i = 0; i < modelsData.length; i++) {
+    var model = modelsData[0].data.attributes.name + " " + modelsData[0].data.attributes.year;
+    var item = document.createElement("option");
+    item.text = model;
+    item.value = 0;
+    vehicleModelDropDown.add(item);
+    
+    for (i = 1; i < modelsData.length; i++) {
         var model = modelsData[i].data.attributes.name + " " + modelsData[i].data.attributes.year;
-        if (i > 0 && model != modelsData[i - 1].data.attributes.name + " " + modelsData[i - 1].data.attributes.year) {
+        if (model != modelsData[i - 1].data.attributes.name + " " + modelsData[i - 1].data.attributes.year) {
             var item = document.createElement("option");
             item.text = model;
             item.value = i;
             vehicleModelDropDown.add(item);
         }
-    } */
+    } 
 
-    var vehicleModelDropDown = document.getElementById("vehicleModelDropDown");
-
-    var item1 = document.createElement("option");
-    item1.text = "car1";
-    vehicleModelDropDown.add(item1);
-
-    var item2 = document.createElement("option");
-    item2.text = "car2";
-    vehicleModelDropDown.add(item2);
+    vehicleModelDropDown.removeAttribute("disabled")
+    enableButton();
 }
 
 async function sendData() {
-    /*let modelIndex = document.getElementById("vehicleModelDropDown").value;
-    let modelID = modelsData[modelIndex].data.id;*/
 
-    let params = new URLSearchParams({
-        "start" : document.getElementById("start"),
-        "destination" : document.getElementById("destination"),
-        "maxRoutes" : 3,
-        //"modelID" : modelID
-        "modelID" : "randomID"
-    })
+    var startData = document.getElementById("start").value;
+    var destData = document.getElementById("destination").value;
+    if (startData == "" || destData == "") {
+        alert("Enter the start and destination locations!");
+        return;
+    }
 
-    let resp = await fetch("https://wilcox-final-project.azurewebsites.net/api/ecomaps?code=pta3QcaZ2Sau1QHzon7zKhHh3PA9gvjCa6ECgQGuaKleAkTSRs584A==" + '&' + params.toString(), {
+    DisableButtonAndShowProgress();
+
+    showRoutes();
+
+    let modelIndex = document.getElementById("vehicleModelDropDown").value;
+    let modelID = modelsData[modelIndex].data.id;
+
+    let resp = await fetch("https://wilcox-final-project.azurewebsites.net/api/ecomaps?code=pta3QcaZ2Sau1QHzon7zKhHh3PA9gvjCa6ECgQGuaKleAkTSRs584A==", {
         method: 'POST',
+        body: {distances},
+        headers: {
+            'modelID' : modelID
+        }
     });
     data = await resp.json();
 
     console.log(data);
 
-    showRoutes();
+    let responseTable = document.getElementById("results");
 
-    let table = document.getElementById("results");
-    for (i = 0; i < data.distances.length; i++) {
-        var row = table.insertRow(-1);
+    let oldtableBody = document.getElementById("resultsBody");
+    let tableBody = document.createElement('tbody');
 
-        var cell1 = row.insertCell(-1);
-        var name = document.createElement("td");
-        name.text = i + 1;
-        cell1.appendChild(name);
+    for (i = 0; i < distances.length; i++) {
+        var row = document.createElement("tr");
 
-        var cell2 = row.insertCell(-1);
-        var time = document.createElement("td");
-        time.text = data.times[i];
-        cell2.appendChild(time);
+        var cellIndex = document.createElement("td");
+        var indexValue = document.createTextNode(i+1);
+        cellIndex.appendChild(indexValue);
+        row.appendChild(cellIndex);
 
-        var cell3 = row.insertCell(-1);
-        var distance = document.createElement("td");
-        distance.text = data.distances[i];
-        cell3.appendChild(distance);
+        var cellDistance = document.createElement("td");
+        var distance = document.createTextNode(distances[i]);
+        cellDistance.appendChild(distance);
+        row.appendChild(cellDistance);
 
-        var cell4 = row.insertCell(-1);
-        var estimate = document.createElement("td");
-        estimate.text = data.estimates[i];
-        cell4.appendChild(estimate);
+        var cellEmission = document.createElement("td");
+        var emission = document.createTextNode(data.estimates[i]);
+        cellEmission.appendChild(emission);
+        row.appendChild(cellEmission);
+
+        tableBody.appendChild(row);
     }
+
+    tableBody.id = "resultsBody";
+    responseTable.replaceChild(tableBody, oldtableBody);
+
+    EnableButtonAndHideProgress();
+
 }
 
 function showRoutes() {
@@ -129,11 +177,13 @@ function showRoutes() {
     }, createMap);
 
     function createMap(err, response) {
-      var map = L.mapquest.map('map', {
-        center: [0, 0],
-        layers: L.mapquest.tileLayer('map'),
-        zoom: 12
-      });
+        if (map == undefined) {
+            map = L.mapquest.map('map', {
+                center: [0, 0],
+                layers: L.mapquest.tileLayer('map'),
+                zoom: 12
+            });
+        }
 
       var customLayer = L.mapquest.directionsLayer({
         startMarker: {
@@ -169,5 +219,10 @@ function showRoutes() {
       customLayer.on('route_selected', function(eventResponse) {
         console.log(eventResponse);
       });
+
+      distances[0] = response.route.distance;
+      for (i = 0; i < response.route.alternateRoutes.length; i++) {
+          distances[i + 1] = response.route.alternateRoutes[i].route.distance;
+      }
     }
   }
