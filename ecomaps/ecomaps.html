@@ -20,6 +20,16 @@
   <body>
     <div class="container">
       <h2>EcoMaps</h2>
+        <div id="output">
+          <table class="table table-condensed" style="width: 40%; margin-left: auto; margin-right: auto; float:right; display:none" id="results">
+            <tr>
+              <th>Route</th>
+              <th>Distance</th>
+              <th>Estimated Emissions</th>
+            </tr>
+            <tbody id="resultsBody"></tbody>
+          </table>
+        </div>
         <label for="start">Enter your starting location:</label>
         <input
           style="width: 40%"
@@ -71,7 +81,7 @@
           class="form-control"
           name="vehicleModelDropDown"
           id="vehicleModelDropDown"
-        ></select><br />
+        ></select><br/>
 
         <button
           type="button"
@@ -83,21 +93,11 @@
 
         <span id="btnspinner" class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
           Submit
-        </button>
+        </button><br/>
     </div>
 
+    <br/>
     <div id="map" style="width: 100%; height: 530px"></div>
-    <br />
-    <div id="output">
-      <table class="table table-condensed" style="width: 70%; margin-left: auto; margin-right: auto" id="results">
-        <tr>
-          <th>Route</th>
-          <th>Distance</th>
-          <th>Estimated Emissions</th>
-        </tr>
-        <tbody id="resultsBody"></tbody>
-      </table>
-    </div>
 
     <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>

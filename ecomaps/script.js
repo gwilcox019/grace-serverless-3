@@ -187,6 +187,7 @@ async function sendData() {
 
     // display information in table
     let responseTable = document.getElementById("results");
+    responseTable.style.display = "block";
 
     let oldtableBody = document.getElementById("resultsBody");
     let tableBody = document.createElement('tbody');
