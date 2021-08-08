@@ -58,19 +58,24 @@ async function getVehicleMakes() {
     disableButton();
     var vehicleMakeDropDown = document.getElementById("vehicleMakeDropDown");
 
-    let resp = await fetch('https://www.carboninterface.com/api/v1/vehicle_makes', {
-        method: 'GET',
-        headers: {"Authorization": "Bearer oQrDMB0AYYOP94S2WuPQIA"}
-    })
-    makesData = await resp.json();
+    try {
+        let resp = await fetch('https://www.carboninterface.com/api/v1/vehicle_makes', {
+            method: 'GET',
+            headers: {"Authorization": "Bearer oQrDMB0AYYOP94S2WuPQIA"}
+        })
+        makesData = await resp.json();
 
-    for (i = 0; i < makesData.length; i++) {
-        var make = makesData[i].data.attributes.name;
-        var item = document.createElement("option");
-        item.text = make;
-        item.value = i;
-        vehicleMakeDropDown.add(item);
-    } 
+        for (i = 0; i < makesData.length; i++) {
+            var make = makesData[i].data.attributes.name;
+            var item = document.createElement("option");
+            item.text = make;
+            item.value = i;
+            vehicleMakeDropDown.add(item);
+        } 
+    } catch(error) {
+        console.log("Vehicle makes request failed")
+        alert("Could not retrieve vehicle makes :( Try again!");
+    }
 
     getVehicleModels();
     enableButton();
@@ -86,27 +91,32 @@ async function getVehicleModels() {
 
     var vehicleModelDropDown = document.getElementById("vehicleModelDropDown");
 
-    let resp = await fetch('https://www.carboninterface.com/api/v1/vehicle_makes/' + makeID + '/vehicle_models', {
-        method: 'GET',
-        headers: {"Authorization": "Bearer oQrDMB0AYYOP94S2WuPQIA"}
-    })
-    modelsData = await resp.json();
+    try {
+        let resp = await fetch('https://www.carboninterface.com/api/v1/vehicle_makes/' + makeID + '/vehicle_models', {
+            method: 'GET',
+            headers: {"Authorization": "Bearer oQrDMB0AYYOP94S2WuPQIA"}
+        })
+        modelsData = await resp.json();
 
-    var model = modelsData[0].data.attributes.name + " " + modelsData[0].data.attributes.year;
-    var item = document.createElement("option");
-    item.text = model;
-    item.value = 0;
-    vehicleModelDropDown.add(item);
+        var model = modelsData[0].data.attributes.name + " " + modelsData[0].data.attributes.year;
+        var item = document.createElement("option");
+        item.text = model;
+        item.value = 0;
+        vehicleModelDropDown.add(item);
     
-    for (i = 1; i < modelsData.length; i++) {
-        var model = modelsData[i].data.attributes.name + " " + modelsData[i].data.attributes.year;
-        if (model != modelsData[i - 1].data.attributes.name + " " + modelsData[i - 1].data.attributes.year) {
-            var item = document.createElement("option");
-            item.text = model;
-            item.value = i;
-            vehicleModelDropDown.add(item);
-        }
-    } 
+        for (i = 1; i < modelsData.length; i++) {
+            var model = modelsData[i].data.attributes.name + " " + modelsData[i].data.attributes.year;
+            if (model != modelsData[i - 1].data.attributes.name + " " + modelsData[i - 1].data.attributes.year) {
+                var item = document.createElement("option");
+                item.text = model;
+                item.value = i;
+                vehicleModelDropDown.add(item);
+            }
+        } 
+    } catch (error) {
+        console.log("Vehicle models request failed")
+        alert("Could not retrieve vehicle models :( Try again!");
+    }
 
     vehicleModelDropDown.removeAttribute("disabled")
     enableButton();
@@ -126,20 +136,32 @@ async function sendData() {
     DisableButtonAndShowProgress();
 
     // generate map
-    showRoutes();
+    try { 
+        showRoutes(); 
+    } catch (error) {
+        console.log("map display failed");
+        alert("Looks like something went wrong :( Try again!");
+        return;
+    } 
 
     // get routes and distances from MapQuest
-    let routesResp = await fetch('http://www.mapquestapi.com/directions/v2/alternateroutes?key=9UBCaLZa6RAYnOH5gKrOWperISGcAITh&from=' 
-        + startData + '&to=' + destData + '&maxRoutes=' + document.getElementById("numRoutes").value 
-        + '&timeOverage=100');
-    let routesInfo = await routesResp.json();
+    try {
+        let routesResp = await fetch('http://www.mapquestapi.com/directions/v2/alternateroutes?key=9UBCaLZa6RAYnOH5gKrOWperISGcAITh&from=' 
+            + startData + '&to=' + destData + '&maxRoutes=' + document.getElementById("numRoutes").value 
+            + '&timeOverage=100');
+        let routesInfo = await routesResp.json();
 
-    // save distances from each route
-    distances[0] = routesInfo.route.distance;
-    if (routesInfo.route.hasOwnProperty('alternateRoutes')) {
-      for (i = 0; i < routesInfo.route.alternateRoutes.length; i++) {
-          distances[i + 1] = routesInfo.route.alternateRoutes[i].route.distance;
-      }
+        // save distances from each route
+        distances[0] = routesInfo.route.distance;
+        if (routesInfo.route.hasOwnProperty('alternateRoutes')) {
+            for (i = 0; i < routesInfo.route.alternateRoutes.length; i++) {
+                distances[i + 1] = routesInfo.route.alternateRoutes[i].route.distance;
+            }
+        }
+    } catch (error) {
+        console.log("MapQuest API alternate routes call failed");
+        alert("Looks like something went wrong :( Try again!");
+        return;
     }
 
     // get vehicle model ID
@@ -147,15 +169,21 @@ async function sendData() {
     let modelID = modelsData[modelIndex].data.id;
 
     // send request to Azure function to get estimates
-    let resp = await fetch("https://wilcox-final-project.azurewebsites.net/api/ecomaps?code=pta3QcaZ2Sau1QHzon7zKhHh3PA9gvjCa6ECgQGuaKleAkTSRs584A==", {
-        method: 'POST',
-        body: JSON.stringify(distances),
-        headers: {
-            'modelID' : modelID,
-            'Content-Type' : 'application/json'
-        }
-    });
-    estimatesData = await resp.json();
+    try {
+        let resp = await fetch("https://wilcox-final-project.azurewebsites.net/api/ecomaps?code=pta3QcaZ2Sau1QHzon7zKhHh3PA9gvjCa6ECgQGuaKleAkTSRs584A==", {
+            method: 'POST',
+            body: JSON.stringify(distances),
+            headers: {
+                'modelID' : modelID,
+                'Content-Type' : 'application/json'
+            }
+        });
+        estimatesData = await resp.json();
+    } catch (error) {
+        console.log("Azure function call failed");
+        alert("Looks like something went wrong :( Try again!");
+        return;
+    }
 
     // display information in table
     let responseTable = document.getElementById("results");
@@ -174,13 +202,13 @@ async function sendData() {
 
         // distance
         var cellDistance = document.createElement("td");
-        var distance = document.createTextNode(distances[i]);
+        var distance = document.createTextNode(distances[i] + " mi");
         cellDistance.appendChild(distance);
         row.appendChild(cellDistance);
 
         // carbon estimate
         var cellEmission = document.createElement("td");
-        var emission = document.createTextNode(estimatesData.estimates[i].data.attributes.carbon_lb);
+        var emission = document.createTextNode(estimatesData.estimates[i].data.attributes.carbon_lb + " lbs carbon");
         cellEmission.appendChild(emission);
         row.appendChild(cellEmission);
 

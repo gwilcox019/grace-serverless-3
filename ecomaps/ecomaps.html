@@ -20,32 +20,32 @@
   <body>
     <div class="container">
       <h2>EcoMaps</h2>
-      <!-- <form onsubmit="sendData()"> -->
         <label for="start">Enter your starting location:</label>
         <input
+          style="width: 40%"
           class="form-control"
           type="text"
           id="start"
           name="start"
           placeholder="Starting location"
           required
-          value = "San Francisco, CA"
         />
+
         <label for="destination">Enter your destination:</label>
         <input
+          style="width: 40%"
           class="form-control"
           type="text"
           id="destination"
           name="destination"
           placeholder="Destination"
           required
-          value = "San Jose, CA"
         />
 
         <label for="numRoutes">Enter the number of routes:</label>
         <select
+          style="width: 40%"
           class="form-control"
-          
           type="text"
           id="numRoutes"
           name="numRoutes"
@@ -55,20 +55,24 @@
           <option>2</option>
           <option>3</option>
         </select>
+
         <label for="vehicleMakeDropDown">Choose a vehicle make:</label>
         <select
+          style="width: 40%"
           class="form-control"
           name="vehicleMakeDropDown"
           id="vehicleMakeDropDown"
           onchange="getVehicleModels()"
         ></select>
+
         <label for="vehicleModelDropDown">Choose a vehicle model:</label>
         <select
+          style="width: 40%"
           class="form-control"
           name="vehicleModelDropDown"
           id="vehicleModelDropDown"
-        ></select
-        ><br />
+        ></select><br />
+
         <button
           type="button"
           class="btn btn-danger"
@@ -76,15 +80,16 @@
           onclick="sendData()"
           disabled
         >
+
         <span id="btnspinner" class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
           Submit
         </button>
-      <!-- </form> -->
     </div>
+
     <div id="map" style="width: 100%; height: 530px"></div>
     <br />
     <div id="output">
-      <table class="table table-condensed" style="width: 80%" id="results">
+      <table class="table table-condensed" style="width: 70%; margin-left: auto; margin-right: auto" id="results">
         <tr>
           <th>Route</th>
           <th>Distance</th>
