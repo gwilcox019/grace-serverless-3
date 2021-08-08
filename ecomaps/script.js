@@ -5,6 +5,7 @@ let modelsData; // list of vehicle models for the given make
 var map; // map
 let distances = []; // list of distances for each route
 
+// button functionality: disable button when page is loading and vehicle options are populating
 $(document).ready(function() {
     document.getElementById("start").addEventListener('keyup', enableDisableSubmitButton );
     document.getElementById("destination").addEventListener('keyup', enableDisableSubmitButton );
@@ -12,29 +13,34 @@ $(document).ready(function() {
     getVehicleMakes();
 });
 
+// disables button
 function disableButton() {
     var btn = document.getElementById("button")
     btn.setAttribute("disabled", null)
 }
   
+// enables button
 function enableButton() {
     var btn = document.getElementById("button")
     btn.removeAttribute("disabled")
   
 }
   
+// disables button and shows progress spinner
 function DisableButtonAndShowProgress(){
     disableButton();
     var spinner = document.getElementById("btnspinner")
     spinner.classList.remove("d-none")
 }
   
+// enables button and gets rid of spinner
 function EnableButtonAndHideProgress(){
     enableButton();
     var spinner = document.getElementById("btnspinner")
     spinner.classList.add("d-none")
 }
 
+// disables button if missing start or destination data
 function enableDisableSubmitButton() {
   var startData = document.getElementById("start").value;
   var destData = document.getElementById("destination").value;
@@ -46,6 +52,7 @@ function enableDisableSubmitButton() {
   }
 }
 
+// retrieves list of vehicle makes from Carbon Interface and shows them in drop down
 async function getVehicleMakes() {
 
     disableButton();
@@ -69,6 +76,7 @@ async function getVehicleMakes() {
     enableButton();
 }
 
+// retrieves list of vehicle models for given make and displays in drop down
 async function getVehicleModels() {
 
     disableButton();
@@ -104,8 +112,10 @@ async function getVehicleModels() {
     enableButton();
 }
 
+// generates map and routes, sends distances to get estimates
 async function sendData() {
 
+    // check that start and destination have been input
     var startData = document.getElementById("start").value;
     var destData = document.getElementById("destination").value;
     if (startData == "" || destData == "") {
@@ -115,13 +125,16 @@ async function sendData() {
 
     DisableButtonAndShowProgress();
 
+    // generate map
     showRoutes();
 
+    // get routes and distances from MapQuest
     let routesResp = await fetch('http://www.mapquestapi.com/directions/v2/alternateroutes?key=9UBCaLZa6RAYnOH5gKrOWperISGcAITh&from=' 
         + startData + '&to=' + destData + '&maxRoutes=' + document.getElementById("numRoutes").value 
         + '&timeOverage=100');
     let routesInfo = await routesResp.json();
 
+    // save distances from each route
     distances[0] = routesInfo.route.distance;
     if (routesInfo.route.hasOwnProperty('alternateRoutes')) {
       for (i = 0; i < routesInfo.route.alternateRoutes.length; i++) {
@@ -129,9 +142,11 @@ async function sendData() {
       }
     }
 
+    // get vehicle model ID
     let modelIndex = document.getElementById("vehicleModelDropDown").value;
     let modelID = modelsData[modelIndex].data.id;
 
+    // send request to Azure function to get estimates
     let resp = await fetch("https://wilcox-final-project.azurewebsites.net/api/ecomaps?code=pta3QcaZ2Sau1QHzon7zKhHh3PA9gvjCa6ECgQGuaKleAkTSRs584A==", {
         method: 'POST',
         body: JSON.stringify(distances),
@@ -140,10 +155,9 @@ async function sendData() {
             'Content-Type' : 'application/json'
         }
     });
-    data = await resp.json();
+    estimatesData = await resp.json();
 
-    console.log(data);
-
+    // display information in table
     let responseTable = document.getElementById("results");
 
     let oldtableBody = document.getElementById("resultsBody");
@@ -152,18 +166,21 @@ async function sendData() {
     for (i = 0; i < distances.length; i++) {
         var row = document.createElement("tr");
 
+        // route number
         var cellIndex = document.createElement("td");
         var indexValue = document.createTextNode(i+1);
         cellIndex.appendChild(indexValue);
         row.appendChild(cellIndex);
 
+        // distance
         var cellDistance = document.createElement("td");
         var distance = document.createTextNode(distances[i]);
         cellDistance.appendChild(distance);
         row.appendChild(cellDistance);
 
+        // carbon estimate
         var cellEmission = document.createElement("td");
-        var emission = document.createTextNode(data.estimates[i]);
+        var emission = document.createTextNode(estimatesData.estimates[i].data.attributes.carbon_lb);
         cellEmission.appendChild(emission);
         row.appendChild(cellEmission);
 
@@ -174,12 +191,13 @@ async function sendData() {
     responseTable.replaceChild(tableBody, oldtableBody);
 
     EnableButtonAndHideProgress();
-
 }
 
+// generates map and displays routes
 function showRoutes() {
     L.mapquest.key = '9UBCaLZa6RAYnOH5gKrOWperISGcAITh';
 
+    // get directions
     var directions = L.mapquest.directions();
     directions.route({
       start: document.getElementById("start").value,
@@ -190,6 +208,7 @@ function showRoutes() {
         }
     }, createMap);
 
+    // create map (call back function)
     function createMap(err, response) {
         if (map == undefined) {
             map = L.mapquest.map('map', {
@@ -199,6 +218,7 @@ function showRoutes() {
             });
         }
 
+      // layer to display the routes
       var customLayer = L.mapquest.directionsLayer({
         startMarker: {
           icon: 'circle',
