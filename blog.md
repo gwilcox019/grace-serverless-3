@@ -40,8 +40,6 @@ Join me in saving the planet!
 
 ## Tools used
 
-## Step by step (with code snippets)
-
 ## Challenges + lessons learned
 
 ## Thanks and Acknowledgements
