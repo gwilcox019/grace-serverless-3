@@ -92,6 +92,9 @@ async function getVehicleModels() {
     var vehicleModelDropDown = document.getElementById("vehicleModelDropDown");
 
     try {
+        for (i = vehicleModelDropDown.options.length - 1; i >= 0; i--)
+            vehicleModelDropDown.remove(i);
+
         let resp = await fetch('https://www.carboninterface.com/api/v1/vehicle_makes/' + makeID + '/vehicle_models', {
             method: 'GET',
             headers: {"Authorization": "Bearer oQrDMB0AYYOP94S2WuPQIA"}
