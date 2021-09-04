@@ -2,7 +2,7 @@
 
 ## About Me
 
-Grace Wilcox is a junior pursuing a BS in computer engineering with minors in French and electrical engineering. Originally from Columbus, Ohio, Grace is thrilled to be exploring the world of computer design and development, an interest of hers since middle school. This summer, Grace participated in the Serverless BitCamp, where she learned about Serverless functions, back end development using Node.js, and front end UI design with HTML, CSS, and JavaScript. She hopes to use these skills for a project she is leading through Case’s Undergraduate Student Government: a mobile application that will provide basic campus information like bus routes, dining hall menus, and an interactive campus map. In her free time, Grace enjoys playing the guitar, baking, and hanging out with friends and family.
+Grace Wilcox is a junior pursuing majors in computer engineering and electrical engineering with a minor in French. Originally from Columbus, Ohio, Grace is thrilled to be exploring the world of computer design and development, an interest of hers since middle school. This summer, Grace participated in the Serverless BitCamp, where she learned about Serverless functions, back end development using Node.js, and front end UI design with HTML, CSS, and JavaScript. She hopes to use these skills for a project she is leading through Case’s Undergraduate Student Government: a mobile application that will provide basic campus information like bus routes, dining hall menus, and an interactive campus map. In her free time, Grace enjoys playing the guitar, baking, and hanging out with friends and family.
 
 ## The Premise
 
@@ -89,4 +89,12 @@ Links for resources:
 
 ## Challenges + lessons learned
 
+BitCamp has been an incredible experience. I came into this program with a decent amount of programming experience, but with little knowledge of web app development. Through this camp I was able to learn so many useful technologies: JavaScript, Node.js, HTML, CSS, JSON. I got an introduction to how web apps work, what the difference is between using a server and Serverless functions, how to interface with an API via HTTP requests, all things that I hope to continue to explore in my career.
+
+Not only did I grow on a technical level, but I also got to grow professionally as an engineer. I had to build my own project. From scratch. I had to come up with the concept, develop a plan on how to achieve my goals - which weren't deliverables assigned by professors - and then I actually had to implement that plan. I also had to deal with the times when things didn't go according to plan. The MapQuest API, for example, gave me and my mentor a run for our money. I rewrote that code a couple times, trying to find the right combination of the SDK and the API to make things work. And, despite the challenge, I am quite happy with and proud of my project.
+
 ## Thanks and Acknowledgements
+
+I want to send a huge thank you to my mentor, Gopal Amlekar. He went above and beyond and was always doing his best to help me, whether it be with my project or just general engineering advice.
+
+I also want to that all of the camp counselors at BitCamp. Shreya, thank you for your flexibility and answering my many questions. Daniel, thanks for letting me use your back-up GitHub account when this one got flagged (which is why this repo was built by danielkimtest, I did indeed write all of the code and do all of the work but just not on this account).
