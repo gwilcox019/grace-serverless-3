@@ -40,6 +40,8 @@
 ### Flowchart
 When the webpage loads, the JS function retrieves the makes list and displays it to the page. The process is repeated with the models list once a make selection is made. Upon the submission of the vehicle information and starting and ending locations, the JS function sends requests to both the MapQuest SDK and API. The former generates and displays the routes directly to the webpage, while the API is simply used to get distance data, which is then sent to the Azure Function. The HTTP trigger function send emissions requests to Carbon Interface for each route, and then returns that data to the JS function. With all necessary data collected, the JS function updates the HTML page to display the routes and emissions in a table.
 
+<img width="859" alt="Screen Shot 2021-09-03 at 23 03 16" src="https://user-images.githubusercontent.com/85890286/132080401-ab14202e-b67e-4d04-aa53-3590f752413f.png">
+
 Links for resources:
 
 - MapQuest API and SDK: https://developer.mapquest.com/documentation/
