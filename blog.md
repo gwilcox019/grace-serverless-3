@@ -98,3 +98,5 @@ Not only did I grow on a technical level, but I also got to grow professionally 
 I want to send a huge thank you to my mentor, Gopal Amlekar. He went above and beyond and was always doing his best to help me, whether it be with my project or just general engineering advice.
 
 I also want to that all of the camp counselors at BitCamp. Shreya, thank you for your flexibility and answering my many questions. Daniel, thanks for letting me use your back-up GitHub account when this one got flagged (which is why this repo was built by danielkimtest, I did indeed write all of the code and do all of the work but just not on this account).
+
+Here is a link to a video presentation of this project that I gave for the closing livestream of the camp: https://www.loom.com/share/4a579132c9d2424292ff498f67fbc23f
